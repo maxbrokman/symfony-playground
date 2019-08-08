@@ -204,6 +204,5 @@ class PerformanceSetTest extends TestCase
         $this->assertEquals("2025-01-01", $outliers[1]->getEnd()->format("Y-m-d"));
         $this->assertCount(1, $outliers[1]->getMeasurements());
         $this->assertContains($outlier3, $outliers[1]->getMeasurements());
-
     }
 }

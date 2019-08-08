@@ -3,7 +3,6 @@
 
 namespace App\Metrics;
 
-
 use Cake\Chronos\Chronos;
 
 class OutlierRange

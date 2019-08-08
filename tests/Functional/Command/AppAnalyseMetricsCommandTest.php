@@ -54,9 +54,6 @@ class AppAnalyseMetricsCommandTest extends KernelTestCase
      */
     public function testDetection(string $filename, string $expected): void
     {
-        $this->markTestSkipped("Not yet implemented");
-        return;
-
         $kernel = self::createKernel();
         $kernel->boot();
 

@@ -1,0 +1,26 @@
+SamKnows Metric Analyser v1.0.0
+===============================
+
+Period checked:
+
+    From: {{ set.dateRangeStart.format("Y-m-d") }}
+    To:   {{ set.dateRangeEnd.format("Y-m-d") }}
+
+Statistics:
+
+    Unit: Megabits per second
+
+    Average: {{ average }}
+    Min: {{ min }}
+    Max: {{ max }}
+    Median: {{ median }}
+{% if lowOutlierSets|length > 0 %}
+
+Investigate:
+
+{% for set in lowOutlierSets %}
+    * The period between {{ set.start.format("Y-m-d") }} and {{ set.end.format("Y-m-d") }}
+      was under-performing.
+{% endfor %}
+
+{% endif %}
