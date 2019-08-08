@@ -1,0 +1,7 @@
+- Took a bit longer than expected, probably because some of this is more complex than it needs to be
+- Loading everything into its own objects is the style I like to work in in PHP but I am aware that for this case
+there could be some performance limitations
+- If you fed this a large dataset you could probably see some big performance improvements by calculating mean, min, max
+etc as you stream data in. Not sure how you would do outliers in this case.
+- Would extract the PerformanceSet into an interface that can be tested against different implementations before doing this
+refactor, tests for lower level stuff wouldn't be so useful
