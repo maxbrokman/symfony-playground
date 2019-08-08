@@ -151,6 +151,61 @@ class PerformanceSet
     }
 
     /**
+     * Arrange low outliers into sets over continuous periods for presentation in results
+     *
+     * @return OutlierRange[]
+     */
+    public function getLowOutlierSets(): array
+    {
+        $outliers = $this->getLowOutliers();
+        if (!count($outliers)) {
+            return [];
+        }
+
+        if (count($outliers) === 1) {
+            return [new OutlierRange($outliers[0]->getDate(), $outliers[0]->getDate(), $outliers)];
+        }
+
+        // Sort here to deal with unsorted metric sets
+        $sorted = usort($outliers, function (PerformanceMeasurement $a, PerformanceMeasurement $b) {
+            if ($a->getDate()->eq($b->getDate())) {
+                return 0;
+            }
+
+            return $a->getDate()->lt($b->getDate()) ? -1 : 1;
+        });
+        if ($sorted === false) {
+            throw new RuntimeException("Could not sort outliers");
+        }
+
+        $first = $outliers[0];
+        $previous = $outliers[0];
+        $set = [$outliers[0]];
+        $outlierSets = [];
+
+        // Start at 1 as we already handled 0
+        for ($i = 1; $i < count($outliers); $i++) {
+            if ($previous->getDate()->addDay()->eq($outliers[$i]->getDate())) {
+                // We are continuous
+                $set[] = $outliers[$i];
+                $previous = $outliers[$i];
+                continue;
+            }
+
+            // We are not continuous
+            $outlierSets[] = new OutlierRange($first->getDate(), $previous->getDate(), $set);
+            $first = $outliers[$i];
+            $previous = $outliers[$i];
+            $set = [$outliers[$i]];
+        }
+
+        // Finish off after the loop quits
+        $outlierSets[] = new OutlierRange($first->getDate(), $previous->getDate(), $set);
+
+        return $outlierSets;
+    }
+
+    /**
      * Extract the dimensions (measurement dates) only for date range calculations
      *
      * @return Chronos[]
