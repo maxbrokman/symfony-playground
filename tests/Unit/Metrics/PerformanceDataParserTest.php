@@ -80,6 +80,5 @@ class PerformanceDataParserTest extends TestCase
         $this->assertTrue($feb5Seen, "2018-02-05 was not seen in outliers");
         $this->assertTrue($feb6Seen, "2018-02-06 was not seen in outliers");
         $this->assertTrue($feb7Seen, "2018-02-07 was not seen in outliers");
-
     }
 }
