@@ -5,7 +5,7 @@ namespace App\Tests\Unit\Metrics;
 
 use App\Metrics\PerformanceMeasurement;
 use App\Metrics\PerformanceSet;
-use Carbon\Carbon;
+use Cake\Chronos\Chronos;
 use Symfony\Bundle\FrameworkBundle\Tests\TestCase;
 
 class PerformanceSetTest extends TestCase
@@ -13,31 +13,31 @@ class PerformanceSetTest extends TestCase
     public function testDateRangeStart()
     {
         $set = new PerformanceSet([
-            new PerformanceMeasurement(Carbon::createFromDate(2019, 1, 1), 50.0),
-            new PerformanceMeasurement(Carbon::createFromDate(2019, 1, 2), 50.0),
-            new PerformanceMeasurement(Carbon::createFromDate(2019, 1, 3), 50.0),
+            new PerformanceMeasurement(Chronos::createFromDate(2019, 1, 1), 50.0),
+            new PerformanceMeasurement(Chronos::createFromDate(2019, 1, 2), 50.0),
+            new PerformanceMeasurement(Chronos::createFromDate(2019, 1, 3), 50.0),
         ]);
 
-        $this->assertEquals(Carbon::createFromDate(2019, 1, 1)->setTime(0, 0, 0), $set->getDateRangeStart());
+        $this->assertEquals(Chronos::createFromDate(2019, 1, 1)->setTime(0, 0, 0), $set->getDateRangeStart());
     }
 
     public function testDateRangeEnd()
     {
         $set = new PerformanceSet([
-            new PerformanceMeasurement(Carbon::createFromDate(2019, 1, 1), 50.0),
-            new PerformanceMeasurement(Carbon::createFromDate(2019, 1, 2), 50.0),
-            new PerformanceMeasurement(Carbon::createFromDate(2019, 1, 3), 50.0),
+            new PerformanceMeasurement(Chronos::createFromDate(2019, 1, 1), 50.0),
+            new PerformanceMeasurement(Chronos::createFromDate(2019, 1, 2), 50.0),
+            new PerformanceMeasurement(Chronos::createFromDate(2019, 1, 3), 50.0),
         ]);
 
-        $this->assertEquals(Carbon::createFromDate(2019, 1, 3)->setTime(0, 0, 0), $set->getDateRangeEnd());
+        $this->assertEquals(Chronos::createFromDate(2019, 1, 3)->setTime(0, 0, 0), $set->getDateRangeEnd());
     }
 
     public function testAverage()
     {
         $set = new PerformanceSet([
-            new PerformanceMeasurement(Carbon::now(), 50.0),
-            new PerformanceMeasurement(Carbon::now(), 100.0),
-            new PerformanceMeasurement(Carbon::now(), 150.0),
+            new PerformanceMeasurement(Chronos::now(), 50.0),
+            new PerformanceMeasurement(Chronos::now(), 100.0),
+            new PerformanceMeasurement(Chronos::now(), 150.0),
         ]);
 
         $this->assertSame(100.0, $set->getAverage());
@@ -46,9 +46,9 @@ class PerformanceSetTest extends TestCase
     public function testMin()
     {
         $set = new PerformanceSet([
-            new PerformanceMeasurement(Carbon::now(), 50.0),
-            new PerformanceMeasurement(Carbon::now(), 100.0),
-            new PerformanceMeasurement(Carbon::now(), 150.0),
+            new PerformanceMeasurement(Chronos::now(), 50.0),
+            new PerformanceMeasurement(Chronos::now(), 100.0),
+            new PerformanceMeasurement(Chronos::now(), 150.0),
         ]);
 
         $this->assertSame(50.0, $set->getMinimum());
@@ -57,9 +57,9 @@ class PerformanceSetTest extends TestCase
     public function testMaximum()
     {
         $set = new PerformanceSet([
-            new PerformanceMeasurement(Carbon::now(), 50.0),
-            new PerformanceMeasurement(Carbon::now(), 100.0),
-            new PerformanceMeasurement(Carbon::now(), 150.0),
+            new PerformanceMeasurement(Chronos::now(), 50.0),
+            new PerformanceMeasurement(Chronos::now(), 100.0),
+            new PerformanceMeasurement(Chronos::now(), 150.0),
         ]);
 
         $this->assertSame(150.0, $set->getMaximum());
@@ -69,29 +69,29 @@ class PerformanceSetTest extends TestCase
     {
         // Odd set
         $set = new PerformanceSet([
-            new PerformanceMeasurement(Carbon::now(), 50.0),
-            new PerformanceMeasurement(Carbon::now(), 100.0),
-            new PerformanceMeasurement(Carbon::now(), 150.0),
+            new PerformanceMeasurement(Chronos::now(), 50.0),
+            new PerformanceMeasurement(Chronos::now(), 100.0),
+            new PerformanceMeasurement(Chronos::now(), 150.0),
         ]);
 
         $this->assertSame(100.0, $set->getMedian());
 
         // Even set
         $set = new PerformanceSet([
-            new PerformanceMeasurement(Carbon::now(), 50.0),
-            new PerformanceMeasurement(Carbon::now(), 100.0),
-            new PerformanceMeasurement(Carbon::now(), 150.0),
-            new PerformanceMeasurement(Carbon::now(), 200.0),
+            new PerformanceMeasurement(Chronos::now(), 50.0),
+            new PerformanceMeasurement(Chronos::now(), 100.0),
+            new PerformanceMeasurement(Chronos::now(), 150.0),
+            new PerformanceMeasurement(Chronos::now(), 200.0),
         ]);
 
         $this->assertSame(125.0, $set->getMedian());
 
         // Unsorted even set
         $set = new PerformanceSet([
-            new PerformanceMeasurement(Carbon::now(), 100.0),
-            new PerformanceMeasurement(Carbon::now(), 150.0),
-            new PerformanceMeasurement(Carbon::now(), 50.0),
-            new PerformanceMeasurement(Carbon::now(), 200.0),
+            new PerformanceMeasurement(Chronos::now(), 100.0),
+            new PerformanceMeasurement(Chronos::now(), 150.0),
+            new PerformanceMeasurement(Chronos::now(), 50.0),
+            new PerformanceMeasurement(Chronos::now(), 200.0),
         ]);
 
         $this->assertSame(125.0, $set->getMedian());
@@ -100,9 +100,9 @@ class PerformanceSetTest extends TestCase
     public function testStandardDeviation()
     {
         $set = new PerformanceSet([
-            new PerformanceMeasurement(Carbon::now(), 50.0),
-            new PerformanceMeasurement(Carbon::now(), 100.0),
-            new PerformanceMeasurement(Carbon::now(), 150.0),
+            new PerformanceMeasurement(Chronos::now(), 50.0),
+            new PerformanceMeasurement(Chronos::now(), 100.0),
+            new PerformanceMeasurement(Chronos::now(), 150.0),
         ]);
 
         $this->assertEquals(40.82482905, $set->getStandardDeviation(), null, 0.00000001);
@@ -111,16 +111,16 @@ class PerformanceSetTest extends TestCase
     public function testLowOutliers()
     {
         $set = new PerformanceSet([
-            $outlier = new PerformanceMeasurement(Carbon::now(), 1.0),
-            new PerformanceMeasurement(Carbon::now(), 1000.0),
-            new PerformanceMeasurement(Carbon::now(), 1000.0),
-            new PerformanceMeasurement(Carbon::now(), 1000.0),
-            new PerformanceMeasurement(Carbon::now(), 1000.0),
-            new PerformanceMeasurement(Carbon::now(), 1000.0),
-            new PerformanceMeasurement(Carbon::now(), 1000.0),
-            new PerformanceMeasurement(Carbon::now(), 1000.0),
-            new PerformanceMeasurement(Carbon::now(), 1000.0),
-            new PerformanceMeasurement(Carbon::now(), 1000.0),
+            $outlier = new PerformanceMeasurement(Chronos::now(), 1.0),
+            new PerformanceMeasurement(Chronos::now(), 1000.0),
+            new PerformanceMeasurement(Chronos::now(), 1000.0),
+            new PerformanceMeasurement(Chronos::now(), 1000.0),
+            new PerformanceMeasurement(Chronos::now(), 1000.0),
+            new PerformanceMeasurement(Chronos::now(), 1000.0),
+            new PerformanceMeasurement(Chronos::now(), 1000.0),
+            new PerformanceMeasurement(Chronos::now(), 1000.0),
+            new PerformanceMeasurement(Chronos::now(), 1000.0),
+            new PerformanceMeasurement(Chronos::now(), 1000.0),
         ]);
 
         $outliers = $set->getLowOutliers();

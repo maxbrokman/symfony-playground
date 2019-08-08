@@ -3,7 +3,7 @@
 
 namespace App\Metrics;
 
-use Carbon\Carbon;
+use Cake\Chronos\Chronos;
 use InvalidArgumentException;
 use RuntimeException;
 
@@ -34,9 +34,9 @@ class PerformanceSet
         $this->measurements = $measurements;
     }
 
-    public function getDateRangeStart(): Carbon
+    public function getDateRangeStart(): Chronos
     {
-        return array_reduce($this->getDimensionsOnly(), function (?Carbon $memo, Carbon $dimension) {
+        return array_reduce($this->getDimensionsOnly(), function (?Chronos $memo, Chronos $dimension) {
             if (is_null($memo)) {
                 return $dimension;
             }
@@ -45,9 +45,9 @@ class PerformanceSet
         }, null);
     }
 
-    public function getDateRangeEnd(): Carbon
+    public function getDateRangeEnd(): Chronos
     {
-        return array_reduce($this->getDimensionsOnly(), function (?Carbon $memo, Carbon $dimension) {
+        return array_reduce($this->getDimensionsOnly(), function (?Chronos $memo, Chronos $dimension) {
             if (is_null($memo)) {
                 return $dimension;
             }
@@ -153,7 +153,7 @@ class PerformanceSet
     /**
      * Extract the dimensions (measurement dates) only for date range calculations
      *
-     * @return Carbon[]
+     * @return Chronos[]
      */
     private function getDimensionsOnly(): array
     {

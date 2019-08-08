@@ -7,7 +7,7 @@ use App\Metrics\Megabits;
 use App\Metrics\PerformanceDataParser;
 use App\Metrics\PerformanceMeasurement;
 use App\Metrics\PerformanceSet;
-use Carbon\Carbon;
+use Cake\Chronos\Chronos;
 use Symfony\Bundle\FrameworkBundle\Tests\TestCase;
 
 class PerformanceDataParserTest extends TestCase
@@ -20,11 +20,11 @@ class PerformanceDataParserTest extends TestCase
 
         $this->assertInstanceOf(PerformanceSet::class, $set);
         $this->assertEquals(
-            Carbon::createFromDate(2018, 1, 29)->format("Y-m-d"),
+            Chronos::createFromDate(2018, 1, 29)->format("Y-m-d"),
             $set->getDateRangeStart()->format("Y-m-d")
         );
         $this->assertEquals(
-            Carbon::createFromDate(2018, 2, 27)->format("Y-m-d"),
+            Chronos::createFromDate(2018, 2, 27)->format("Y-m-d"),
             $set->getDateRangeEnd()->format("Y-m-d")
         );
 
@@ -43,11 +43,11 @@ class PerformanceDataParserTest extends TestCase
 
         $this->assertInstanceOf(PerformanceSet::class, $set);
         $this->assertEquals(
-            Carbon::createFromDate(2018, 1, 29)->format("Y-m-d"),
+            Chronos::createFromDate(2018, 1, 29)->format("Y-m-d"),
             $set->getDateRangeStart()->format("Y-m-d")
         );
         $this->assertEquals(
-            Carbon::createFromDate(2018, 2, 27)->format("Y-m-d"),
+            Chronos::createFromDate(2018, 2, 27)->format("Y-m-d"),
             $set->getDateRangeEnd()->format("Y-m-d")
         );
 

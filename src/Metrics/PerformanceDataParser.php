@@ -3,7 +3,7 @@
 
 namespace App\Metrics;
 
-use Carbon\Carbon;
+use Cake\Chronos\Chronos;
 use InvalidArgumentException;
 use RuntimeException;
 
@@ -32,7 +32,7 @@ class PerformanceDataParser
         $measurements = [];
         foreach ($metricData as $metric) {
             // Parsing dates here will add a lot of overhead as well
-            $measurements[] = new PerformanceMeasurement(Carbon::parse($metric["dtime"]), (float)$metric["metricValue"]);
+            $measurements[] = new PerformanceMeasurement(Chronos::parse($metric["dtime"]), (float)$metric["metricValue"]);
         }
 
         return new PerformanceSet($measurements);

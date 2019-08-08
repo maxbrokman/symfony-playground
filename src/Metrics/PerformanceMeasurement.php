@@ -3,12 +3,12 @@
 
 namespace App\Metrics;
 
-use Carbon\Carbon;
+use Cake\Chronos\Chronos;
 
 class PerformanceMeasurement
 {
     /**
-     * @var Carbon
+     * @var Chronos
      */
     private $date;
     /**
@@ -17,19 +17,19 @@ class PerformanceMeasurement
     private $bytesPerSecond;
 
     /**
-     * @param Carbon $date
+     * @param Chronos $date
      * @param float $bytesPerSecond
      */
-    public function __construct(Carbon $date, float $bytesPerSecond)
+    public function __construct(Chronos $date, float $bytesPerSecond)
     {
-        $this->date = (clone $date)->setTime(0, 0, 0, 0);
+        $this->date = $date->setTime(0, 0, 0, 0);
         $this->bytesPerSecond = $bytesPerSecond;
     }
 
     /**
-     * @return Carbon
+     * @return Chronos
      */
-    public function getDate(): Carbon
+    public function getDate(): Chronos
     {
         return $this->date;
     }
