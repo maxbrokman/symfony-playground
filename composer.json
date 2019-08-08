@@ -6,6 +6,7 @@
         "ext-iconv": "*",
         "ext-json": "*",
         "cakephp/chronos": "^1.2",
+        "phpstan/phpstan": "^0.11.12",
         "symfony/console": "^4.0",
         "symfony/flex": "^1.2",
         "symfony/framework-bundle": "^4.0",
