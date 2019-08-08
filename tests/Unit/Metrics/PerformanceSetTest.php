@@ -65,6 +65,38 @@ class PerformanceSetTest extends TestCase
         $this->assertSame(150.0, $set->getMaximum());
     }
 
+    public function testMedian()
+    {
+        // Odd set
+        $set = new PerformanceSet([
+            new PerformanceMeasurement(Carbon::now(), 50.0),
+            new PerformanceMeasurement(Carbon::now(), 100.0),
+            new PerformanceMeasurement(Carbon::now(), 150.0),
+        ]);
+
+        $this->assertSame(100.0, $set->getMedian());
+
+        // Even set
+        $set = new PerformanceSet([
+            new PerformanceMeasurement(Carbon::now(), 50.0),
+            new PerformanceMeasurement(Carbon::now(), 100.0),
+            new PerformanceMeasurement(Carbon::now(), 150.0),
+            new PerformanceMeasurement(Carbon::now(), 200.0),
+        ]);
+
+        $this->assertSame(125.0, $set->getMedian());
+
+        // Unsorted even set
+        $set = new PerformanceSet([
+            new PerformanceMeasurement(Carbon::now(), 100.0),
+            new PerformanceMeasurement(Carbon::now(), 150.0),
+            new PerformanceMeasurement(Carbon::now(), 50.0),
+            new PerformanceMeasurement(Carbon::now(), 200.0),
+        ]);
+
+        $this->assertSame(125.0, $set->getMedian());
+    }
+
     public function testStandardDeviation()
     {
         $set = new PerformanceSet([

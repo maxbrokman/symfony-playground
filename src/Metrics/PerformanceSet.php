@@ -5,6 +5,7 @@ namespace App\Metrics;
 
 use Carbon\Carbon;
 use InvalidArgumentException;
+use RuntimeException;
 
 /**
  * Holds a set of performance measurements and calculates statistics about them.
@@ -86,6 +87,32 @@ class PerformanceSet
     public function getMaximum()
     {
         return max($this->getMetricsOnly());
+    }
+
+    /**
+     * Get the media performance measurement from the set
+     *
+     * @return float performance in bytes per second
+     */
+    public function getMedian()
+    {
+        $count = count($this->measurements);
+        $middleKey = (int)floor(($count - 1) / 2);
+
+        $set = array_values($this->getMetricsOnly());
+        // Sorting here might also get ugly for very large sets
+        $sorted = sort($set);
+        if (!$sorted) {
+            throw new RuntimeException("Could not sort metrics");
+        }
+
+        // Odd number of elements in set, can use middle
+        if ($count % 2 !== 0) {
+            return $set[$middleKey];
+        }
+
+        // Even number of elements in set, take mean of two neighbouring elements
+        return ($set[$middleKey] + $set[$middleKey + 1]) / 2;
     }
 
     /**
