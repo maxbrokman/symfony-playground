@@ -10,16 +10,16 @@ Statistics:
 
     Unit: Megabits per second
 
-    Average: {{ average }}
-    Min: {{ min }}
-    Max: {{ max }}
-    Median: {{ median }}
-{% if lowOutlierSets|length > 0 %}
+    Average: {{ set.average|megabitsFromBytes }}
+    Min: {{ set.minimum|megabitsFromBytes }}
+    Max: {{ set.maximum|megabitsFromBytes }}
+    Median: {{ set.median|megabitsFromBytes }}
+{% if set.lowOutlierSets|length > 0 %}
 
 Investigate:
 
-{% for set in lowOutlierSets %}
-    * The period between {{ set.start.format("Y-m-d") }} and {{ set.end.format("Y-m-d") }}
+{% for low in set.lowOutlierSets %}
+    * The period between {{ low.start.format("Y-m-d") }} and {{ low.end.format("Y-m-d") }}
       was under-performing.
 {% endfor %}
 
