@@ -3,7 +3,6 @@
 
 namespace App\Metrics;
 
-
 class MinimumCalculator
 {
     use WorksWithPerformanceMeasurements;

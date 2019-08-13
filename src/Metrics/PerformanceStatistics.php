@@ -56,10 +56,7 @@ class PerformanceStatistics
      */
     public function getAverage(): float
     {
-        $sum = array_sum($this->getMetricsOnly($this->measurements));
-        $count = count($this->measurements);
-
-        return $sum / $count;
+        return (new AverageCalculator())->calculate($this->range);
     }
 
     /**
