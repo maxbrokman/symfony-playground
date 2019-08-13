@@ -76,7 +76,7 @@ class PerformanceStatistics
      */
     public function getMaximum()
     {
-        return max($this->getMetricsOnly($this->measurements));
+        return (new MaximumCalculator())->calculate($this->range);
     }
 
     /**
