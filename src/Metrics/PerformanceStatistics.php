@@ -80,7 +80,7 @@ class PerformanceStatistics
     }
 
     /**
-     * Get the media performance measurement from the set
+     * Get the median performance measurement from the set
      *
      * @return float performance in bytes per second
      */
