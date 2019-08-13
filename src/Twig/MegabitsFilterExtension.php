@@ -3,7 +3,7 @@
 
 namespace App\Twig;
 
-use App\Metrics\Megabits;
+use App\Util\Megabits;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 

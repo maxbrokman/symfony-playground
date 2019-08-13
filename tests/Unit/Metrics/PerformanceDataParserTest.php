@@ -3,7 +3,7 @@
 
 namespace App\Tests\Unit\Metrics;
 
-use App\Metrics\Megabits;
+use App\Util\Megabits;
 use App\Metrics\PerformanceDataParser;
 use App\Metrics\PerformanceMeasurement;
 use App\Metrics\PerformanceSet;

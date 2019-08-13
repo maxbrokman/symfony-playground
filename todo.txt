@@ -10,3 +10,5 @@ refactor, tests for lower level stuff wouldn't be so useful
 - Chronos is used as personal preference and makes any future manipulation useful for the addition of some small overhead
 - Conversion between units has been moved into a twig filter, did not occur to me to originally do this as I am not an
 experienced symfony dev
+- Megabits conversion done as a static call as it's just a simple conversion, exists in a class to allow future fromKiloBytes
+type calls etc

@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
 
-namespace App\Tests\Unit\Metrics;
+namespace App\Tests\Unit\Util;
 
-use App\Metrics\Megabits;
-use PHPUnit\Framework\TestCase;
+use App\Util\Megabits;
+use Symfony\Bundle\FrameworkBundle\Tests\TestCase;
 
 class MegabitsTest extends TestCase
 {
