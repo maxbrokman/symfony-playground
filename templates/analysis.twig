@@ -3,8 +3,8 @@ SamKnows Metric Analyser v1.0.0
 
 Period checked:
 
-    From: {{ set.dateRangeStart.format("Y-m-d") }}
-    To:   {{ set.dateRangeEnd.format("Y-m-d") }}
+    From: {{ set.dateRangeStart|date("Y-m-d") }}
+    To:   {{ set.dateRangeEnd|date("Y-m-d") }}
 
 Statistics:
 
@@ -19,7 +19,7 @@ Statistics:
 Investigate:
 
 {% for low in set.lowOutlierSets %}
-    * The period between {{ low.start.format("Y-m-d") }} and {{ low.end.format("Y-m-d") }}
+    * The period between {{ low.start|date("Y-m-d") }} and {{ low.end|date("Y-m-d") }}
       was under-performing.
 {% endfor %}
 
