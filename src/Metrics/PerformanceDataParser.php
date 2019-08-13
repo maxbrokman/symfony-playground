@@ -9,7 +9,7 @@ use RuntimeException;
 
 class PerformanceDataParser
 {
-    public function parse(string $file): PerformanceSet
+    public function parse(string $file): PerformanceStatistics
     {
         // Could stream this off disk but we're going to load it all into our objects anyway
         $fileContents = file_get_contents($file);
@@ -35,6 +35,6 @@ class PerformanceDataParser
             $measurements[] = new PerformanceMeasurement(Chronos::parse($metric["dtime"]), (float)$metric["metricValue"]);
         }
 
-        return new PerformanceSet($measurements);
+        return new PerformanceStatistics($measurements);
     }
 }

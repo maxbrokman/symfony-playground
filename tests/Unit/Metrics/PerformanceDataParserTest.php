@@ -6,7 +6,7 @@ namespace App\Tests\Unit\Metrics;
 use App\Util\Megabits;
 use App\Metrics\PerformanceDataParser;
 use App\Metrics\PerformanceMeasurement;
-use App\Metrics\PerformanceSet;
+use App\Metrics\PerformanceStatistics;
 use Cake\Chronos\Chronos;
 use Symfony\Bundle\FrameworkBundle\Tests\TestCase;
 
@@ -18,7 +18,7 @@ class PerformanceDataParserTest extends TestCase
         $parser = new PerformanceDataParser();
         $set = $parser->parse($filename);
 
-        $this->assertInstanceOf(PerformanceSet::class, $set);
+        $this->assertInstanceOf(PerformanceStatistics::class, $set);
         $this->assertEquals(
             Chronos::createFromDate(2018, 1, 29)->format("Y-m-d"),
             $set->getDateRangeStart()->format("Y-m-d")
@@ -41,7 +41,7 @@ class PerformanceDataParserTest extends TestCase
         $parser = new PerformanceDataParser();
         $set = $parser->parse($filename);
 
-        $this->assertInstanceOf(PerformanceSet::class, $set);
+        $this->assertInstanceOf(PerformanceStatistics::class, $set);
         $this->assertEquals(
             Chronos::createFromDate(2018, 1, 29)->format("Y-m-d"),
             $set->getDateRangeStart()->format("Y-m-d")

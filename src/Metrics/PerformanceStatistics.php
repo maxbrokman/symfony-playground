@@ -9,12 +9,8 @@ use RuntimeException;
 
 /**
  * Holds a set of performance measurements and calculates statistics about them.
- * NB: When dealing with large data sets wrapping all the measurements up in objects
- * like this is going to add significant performance overheads and so might not be the
- * best approach, tests allow replacement of collection of PerformanceMeasurement with
- * a bare array later.
  */
-class PerformanceSet
+class PerformanceStatistics
 {
     const OUTLIER_FACTOR = 2;
     /**
