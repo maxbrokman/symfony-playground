@@ -86,23 +86,7 @@ class PerformanceStatistics
      */
     public function getMedian()
     {
-        $count = count($this->measurements);
-        $middleKey = (int)floor(($count - 1) / 2);
-
-        $set = array_values($this->getMetricsOnly($this->measurements));
-        // Sorting here might also get ugly for very large sets
-        $sorted = sort($set);
-        if (!$sorted) {
-            throw new RuntimeException("Could not sort metrics");
-        }
-
-        // Odd number of elements in set, can use middle
-        if ($count % 2 !== 0) {
-            return $set[$middleKey];
-        }
-
-        // Even number of elements in set, take mean of two neighbouring elements
-        return ($set[$middleKey] + $set[$middleKey + 1]) / 2;
+        return (new MedianCalculator())->calculate($this->range);
     }
 
     /**
