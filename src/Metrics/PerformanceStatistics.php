@@ -12,11 +12,14 @@ use RuntimeException;
  */
 class PerformanceStatistics
 {
+    use WorksWithPerformanceMeasurements;
+
     const OUTLIER_FACTOR = 2;
+
     /**
-     * @var array
+     * @var MeasurementRange
      */
-    private $measurements;
+    private $range;
 
     /**
      * @param PerformanceMeasurement[] $measurements
@@ -28,28 +31,17 @@ class PerformanceStatistics
         }
 
         $this->measurements = $measurements;
+        $this->range = new MeasurementRange($measurements);
     }
 
     public function getDateRangeStart(): Chronos
     {
-        return array_reduce($this->getDimensionsOnly(), function (?Chronos $memo, Chronos $dimension) {
-            if (is_null($memo)) {
-                return $dimension;
-            }
-
-            return $dimension->min($memo);
-        }, null);
+        return $this->range->getStart();
     }
 
     public function getDateRangeEnd(): Chronos
     {
-        return array_reduce($this->getDimensionsOnly(), function (?Chronos $memo, Chronos $dimension) {
-            if (is_null($memo)) {
-                return $dimension;
-            }
-
-            return $dimension->max($memo);
-        }, null);
+        return $this->range->getEnd();
     }
 
     /**
@@ -149,7 +141,7 @@ class PerformanceStatistics
     /**
      * Arrange low outliers into sets over continuous periods for presentation in results
      *
-     * @return StatisticsRange[]
+     * @return MeasurementRange[]
      */
     public function getLowOutlierSets(): array
     {
@@ -159,7 +151,7 @@ class PerformanceStatistics
         }
 
         if (count($outliers) === 1) {
-            return [new StatisticsRange($outliers[0]->getDate(), $outliers[0]->getDate(), $outliers)];
+            return [new MeasurementRange($outliers)];
         }
 
         // Sort here to deal with unsorted metric sets
@@ -189,39 +181,16 @@ class PerformanceStatistics
             }
 
             // We are not continuous
-            $outlierSets[] = new StatisticsRange($first->getDate(), $previous->getDate(), $set);
+            $outlierSets[] = new MeasurementRange($set);
             $first = $outliers[$i];
             $previous = $outliers[$i];
             $set = [$outliers[$i]];
         }
 
         // Finish off after the loop quits
-        $outlierSets[] = new StatisticsRange($first->getDate(), $previous->getDate(), $set);
+        $outlierSets[] = new MeasurementRange($set);
 
         return $outlierSets;
     }
 
-    /**
-     * Extract the dimensions (measurement dates) only for date range calculations
-     *
-     * @return Chronos[]
-     */
-    private function getDimensionsOnly(): array
-    {
-        return array_map(function (PerformanceMeasurement $measurement) {
-            return $measurement->getDate();
-        }, $this->measurements);
-    }
-
-    /**
-     * Extract the metrics (bytes per second) only for mean/min/max etc calculations
-     *
-     * @return float[]
-     */
-    private function getMetricsOnly(): array
-    {
-        return array_map(function (PerformanceMeasurement $measurement) {
-            return $measurement->getBytesPerSecond();
-        }, $this->measurements);
-    }
 }
