@@ -149,7 +149,7 @@ class PerformanceStatistics
     /**
      * Arrange low outliers into sets over continuous periods for presentation in results
      *
-     * @return OutlierRange[]
+     * @return StatisticsRange[]
      */
     public function getLowOutlierSets(): array
     {
@@ -159,7 +159,7 @@ class PerformanceStatistics
         }
 
         if (count($outliers) === 1) {
-            return [new OutlierRange($outliers[0]->getDate(), $outliers[0]->getDate(), $outliers)];
+            return [new StatisticsRange($outliers[0]->getDate(), $outliers[0]->getDate(), $outliers)];
         }
 
         // Sort here to deal with unsorted metric sets
@@ -189,14 +189,14 @@ class PerformanceStatistics
             }
 
             // We are not continuous
-            $outlierSets[] = new OutlierRange($first->getDate(), $previous->getDate(), $set);
+            $outlierSets[] = new StatisticsRange($first->getDate(), $previous->getDate(), $set);
             $first = $outliers[$i];
             $previous = $outliers[$i];
             $set = [$outliers[$i]];
         }
 
         // Finish off after the loop quits
-        $outlierSets[] = new OutlierRange($first->getDate(), $previous->getDate(), $set);
+        $outlierSets[] = new StatisticsRange($first->getDate(), $previous->getDate(), $set);
 
         return $outlierSets;
     }

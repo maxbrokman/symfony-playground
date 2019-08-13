@@ -3,7 +3,7 @@
 
 namespace App\Tests\Unit\Metrics;
 
-use App\Metrics\OutlierRange;
+use App\Metrics\StatisticsRange;
 use App\Metrics\PerformanceMeasurement;
 use App\Metrics\PerformanceStatistics;
 use Cake\Chronos\Chronos;
@@ -146,7 +146,7 @@ class PerformanceStatisticsTest extends TestCase
 
         $outliers = $set->getLowOutlierSets();
         $this->assertCount(1, $outliers);
-        $this->assertInstanceOf(OutlierRange::class, $outliers[0]);
+        $this->assertInstanceOf(StatisticsRange::class, $outliers[0]);
         $this->assertEquals("2019-01-01", $outliers[0]->getStart()->format("Y-m-d"));
         $this->assertEquals("2019-01-01", $outliers[0]->getEnd()->format("Y-m-d"));
         $this->assertCount(1, $outliers[0]->getMeasurements());
@@ -192,14 +192,14 @@ class PerformanceStatisticsTest extends TestCase
         $outliers = $set->getLowOutlierSets();
         $this->assertCount(2, $outliers);
 
-        $this->assertInstanceOf(OutlierRange::class, $outliers[0]);
+        $this->assertInstanceOf(StatisticsRange::class, $outliers[0]);
         $this->assertEquals("2019-01-01", $outliers[0]->getStart()->format("Y-m-d"));
         $this->assertEquals("2019-01-02", $outliers[0]->getEnd()->format("Y-m-d"));
         $this->assertCount(2, $outliers[0]->getMeasurements());
         $this->assertContains($outlier, $outliers[0]->getMeasurements());
         $this->assertContains($outlier2, $outliers[0]->getMeasurements());
 
-        $this->assertInstanceOf(OutlierRange::class, $outliers[1]);
+        $this->assertInstanceOf(StatisticsRange::class, $outliers[1]);
         $this->assertEquals("2025-01-01", $outliers[1]->getStart()->format("Y-m-d"));
         $this->assertEquals("2025-01-01", $outliers[1]->getEnd()->format("Y-m-d"));
         $this->assertCount(1, $outliers[1]->getMeasurements());
