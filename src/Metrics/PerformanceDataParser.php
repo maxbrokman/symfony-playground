@@ -9,6 +9,50 @@ use RuntimeException;
 
 class PerformanceDataParser
 {
+    /**
+     * @var MaximumCalculator
+     */
+    private $maximumCalculator;
+    /**
+     * @var MinimumCalculator
+     */
+    private $minimumCalculator;
+    /**
+     * @var AverageCalculator
+     */
+    private $averageCalculator;
+    /**
+     * @var MedianCalculator
+     */
+    private $medianCalculator;
+    /**
+     * @var LowOutlierIdentifier
+     */
+    private $lowOutlierIdentifier;
+
+    /**
+     * @note Injection is not really necessary here but is left as a demonstration of dependency injection
+     *
+     * @param MaximumCalculator $maximumCalculator
+     * @param MinimumCalculator $minimumCalculator
+     * @param AverageCalculator $averageCalculator
+     * @param MedianCalculator $medianCalculator
+     * @param LowOutlierIdentifier $lowOutlierIdentifier
+     */
+    public function __construct(
+        MaximumCalculator $maximumCalculator,
+        MinimumCalculator $minimumCalculator,
+        AverageCalculator $averageCalculator,
+        MedianCalculator $medianCalculator,
+        LowOutlierIdentifier $lowOutlierIdentifier
+    ) {
+        $this->maximumCalculator = $maximumCalculator;
+        $this->minimumCalculator = $minimumCalculator;
+        $this->averageCalculator = $averageCalculator;
+        $this->medianCalculator = $medianCalculator;
+        $this->lowOutlierIdentifier = $lowOutlierIdentifier;
+    }
+
     public function parse(string $file): PerformanceStatistics
     {
         // Could stream this off disk but we're going to load it all into our objects anyway
@@ -35,6 +79,16 @@ class PerformanceDataParser
             $measurements[] = new PerformanceMeasurement(Chronos::parse($metric["dtime"]), (float)$metric["metricValue"]);
         }
 
-        return new PerformanceStatistics($measurements);
+        $range = new MeasurementRange($measurements);
+
+        // @fixme there is potential for dangerous bugs here with 4 arguments in a row with very similar instantiations
+        return new PerformanceStatistics(
+            $range,
+            $this->maximumCalculator->calculate($range),
+            $this->minimumCalculator->calculate($range),
+            $this->averageCalculator->calculate($range),
+            $this->medianCalculator->calculate($range),
+            $this->lowOutlierIdentifier->identifyLowOutliers($range)
+        );
     }
 }

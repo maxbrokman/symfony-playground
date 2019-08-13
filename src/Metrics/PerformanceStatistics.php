@@ -4,36 +4,50 @@
 namespace App\Metrics;
 
 use Cake\Chronos\Chronos;
-use InvalidArgumentException;
 
 /**
  * Holds a set of performance measurements and calculates statistics about them.
  */
 class PerformanceStatistics
 {
-    use WorksWithPerformanceMeasurements;
-
-    /**
-     * @var PerformanceMeasurement[]
-     */
-    private $measurements;
-
     /**
      * @var MeasurementRange
      */
     private $range;
 
     /**
-     * @param PerformanceMeasurement[] $measurements
+     * @var float
      */
-    public function __construct(array $measurements)
-    {
-        if (!count($measurements)) {
-            throw new InvalidArgumentException(__CLASS__ . " requires at least one " . PerformanceMeasurement::class);
-        }
+    private $max;
 
-        $this->measurements = $measurements;
-        $this->range = new MeasurementRange($measurements);
+    /**
+     * @var float
+     */
+    private $min;
+
+    /**
+     * @var float
+     */
+    private $average;
+
+    /**
+     * @var float
+     */
+    private $median;
+
+    /**
+     * @var array
+     */
+    private $lowOutlierRanges;
+
+    public function __construct(MeasurementRange $range, float $max, float $min, float $average, float $median, array $lowOutlierRanges)
+    {
+        $this->range = $range;
+        $this->max = $max;
+        $this->min = $min;
+        $this->average = $average;
+        $this->median = $median;
+        $this->lowOutlierRanges = $lowOutlierRanges;
     }
 
     public function getDateRangeStart(): Chronos
@@ -53,7 +67,7 @@ class PerformanceStatistics
      */
     public function getAverage(): float
     {
-        return (new AverageCalculator())->calculate($this->range);
+        return $this->average;
     }
 
     /**
@@ -63,7 +77,7 @@ class PerformanceStatistics
      */
     public function getMinimum(): float
     {
-        return (new MinimumCalculator())->calculate($this->range);
+        return $this->min;
     }
 
     /**
@@ -73,7 +87,7 @@ class PerformanceStatistics
      */
     public function getMaximum()
     {
-        return (new MaximumCalculator())->calculate($this->range);
+        return $this->max;
     }
 
     /**
@@ -83,7 +97,7 @@ class PerformanceStatistics
      */
     public function getMedian()
     {
-        return (new MedianCalculator())->calculate($this->range);
+        return $this->median;
     }
 
     /**
@@ -93,6 +107,6 @@ class PerformanceStatistics
      */
     public function getLowOutlierSets(): array
     {
-        return (new LowOutlierIdentifier())->identifyLowOutliers($this->range);
+        return $this->lowOutlierRanges;
     }
 }

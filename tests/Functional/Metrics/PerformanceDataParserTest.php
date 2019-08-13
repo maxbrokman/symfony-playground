@@ -1,22 +1,41 @@
 <?php declare(strict_types=1);
 
 
-namespace App\Tests\Unit\Metrics;
+namespace App\Tests\Functional\Metrics;
 
+use App\Metrics\AverageCalculator;
+use App\Metrics\LowOutlierIdentifier;
+use App\Metrics\MaximumCalculator;
+use App\Metrics\MedianCalculator;
+use App\Metrics\MinimumCalculator;
 use App\Util\Megabits;
 use App\Metrics\PerformanceDataParser;
-use App\Metrics\PerformanceMeasurement;
 use App\Metrics\PerformanceStatistics;
 use Cake\Chronos\Chronos;
 use Symfony\Bundle\FrameworkBundle\Tests\TestCase;
 
 class PerformanceDataParserTest extends TestCase
 {
+    /**
+     * @var PerformanceDataParser
+     */
+    private $parser;
+
+    protected function setUp()
+    {
+        $this->parser = new PerformanceDataParser(
+            new MaximumCalculator(),
+            new MinimumCalculator(),
+            new AverageCalculator(),
+            new MedianCalculator(),
+            new LowOutlierIdentifier()
+        );
+    }
+
     public function testParse()
     {
         $filename = \realpath(__DIR__ . "/../../../resources/fixtures/1.json");
-        $parser = new PerformanceDataParser();
-        $set = $parser->parse($filename);
+        $set = $this->parser->parse($filename);
 
         $this->assertInstanceOf(PerformanceStatistics::class, $set);
         $this->assertEquals(
@@ -38,8 +57,7 @@ class PerformanceDataParserTest extends TestCase
     public function testParseWithOutliers()
     {
         $filename = \realpath(__DIR__ . "/../../../resources/fixtures/2.json");
-        $parser = new PerformanceDataParser();
-        $set = $parser->parse($filename);
+        $set = $this->parser->parse($filename);
 
         $this->assertInstanceOf(PerformanceStatistics::class, $set);
         $this->assertEquals(

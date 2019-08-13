@@ -25,11 +25,20 @@ class AppAnalyseMetricsCommand extends Command
      * @var Environment
      */
     private $twig;
+    /**
+     * @var PerformanceDataParser
+     */
+    private $parser;
 
-    public function __construct(Environment $twig)
+    /**
+     * @param Environment $twig
+     * @param PerformanceDataParser $parser
+     */
+    public function __construct(Environment $twig, PerformanceDataParser $parser)
     {
         parent::__construct();
         $this->twig = $twig;
+        $this->parser = $parser;
     }
 
     /**
@@ -51,8 +60,7 @@ class AppAnalyseMetricsCommand extends Command
     {
         $filename = $input->getOption("input");
 
-        $parser = new PerformanceDataParser();
-        $set = $parser->parse($filename);
+        $set = $this->parser->parse($filename);
 
         $content = $this->twig->render(
             "analysis.twig",
