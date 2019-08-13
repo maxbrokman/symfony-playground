@@ -5,3 +5,6 @@ there could be some performance limitations
 etc as you stream data in. Not sure how you would do outliers in this case.
 - Would extract the PerformanceSet into an interface that can be tested against different implementations before doing this
 refactor, tests for lower level stuff wouldn't be so useful
+
+# 13th August
+- Chronos is used as personal preference and makes any future manipulation useful for the addition of some small overhead
