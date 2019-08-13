@@ -35,8 +35,6 @@ class PerformanceDataParser
             $measurements[] = new PerformanceMeasurement(Chronos::parse($metric["dtime"]), (float)$metric["metricValue"]);
         }
 
-
-
         return new PerformanceStatistics($measurements);
     }
 }
