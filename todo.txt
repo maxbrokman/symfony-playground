@@ -12,3 +12,9 @@ refactor, tests for lower level stuff wouldn't be so useful
 experienced symfony dev
 - Megabits conversion done as a static call as it's just a simple conversion, exists in a class to allow future fromKiloBytes
 type calls etc
+- Statistical calculations have been extracted from the PerformanceSet/PerformanceStatistics class into their own min, max,
+mean, median, outlier group classes to give each piece a single calculation responsibility, mainly as a demonstrration.
+I do not think that having these calculation done in the same place is a violation of SRP, in this case the
+single responsibility / unit is performing basic statistical calculations over a set of data. In return for doing this
+we now have quite a bit more code for little benefit in terms of compose-ability – we're unlikely to want to swap out our
+maximum calculator – and little DRY-ness, these are not in general complex operations that need extraction.
