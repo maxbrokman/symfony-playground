@@ -69,7 +69,7 @@ class PerformanceStatistics
      */
     public function getMinimum(): float
     {
-        return min($this->getMetricsOnly($this->measurements));
+        return (new MinimumCalculator())->calculate($this->range);
     }
 
     /**
