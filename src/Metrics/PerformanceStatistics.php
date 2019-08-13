@@ -5,7 +5,6 @@ namespace App\Metrics;
 
 use Cake\Chronos\Chronos;
 use InvalidArgumentException;
-use RuntimeException;
 
 /**
  * Holds a set of performance measurements and calculates statistics about them.
