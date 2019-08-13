@@ -11,9 +11,15 @@ class MeasurementRange
     use WorksWithPerformanceMeasurements;
 
     /**
+     * @var PerformanceMeasurement[]|array
+     */
+    private $measurements;
+
+    /**
      * @var Chronos
      */
     private $start;
+
     /**
      * @var Chronos
      */
@@ -64,7 +70,7 @@ class MeasurementRange
      */
     private function init(): void
     {
-        $this->start = array_reduce($this->getDimensionsOnly(), function (?Chronos $memo, Chronos $dimension) {
+        $this->start = array_reduce($this->getDimensionsOnly($this->measurements), function (?Chronos $memo, Chronos $dimension) {
             if (is_null($memo)) {
                 return $dimension;
             }
@@ -72,7 +78,7 @@ class MeasurementRange
             return $dimension->min($memo);
         }, null);
 
-        $this->end = array_reduce($this->getDimensionsOnly(), function (?Chronos $memo, Chronos $dimension) {
+        $this->end = array_reduce($this->getDimensionsOnly($this->measurements), function (?Chronos $memo, Chronos $dimension) {
             if (is_null($memo)) {
                 return $dimension;
             }

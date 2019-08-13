@@ -3,7 +3,6 @@
 
 namespace App\Tests\Unit\Metrics;
 
-
 use App\Metrics\PerformanceMeasurement;
 use App\Metrics\MeasurementRange;
 use Cake\Chronos\Chronos;

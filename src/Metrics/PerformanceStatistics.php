@@ -17,6 +17,11 @@ class PerformanceStatistics
     const OUTLIER_FACTOR = 2;
 
     /**
+     * @var PerformanceMeasurement[]
+     */
+    private $measurements;
+
+    /**
      * @var MeasurementRange
      */
     private $range;
@@ -51,7 +56,7 @@ class PerformanceStatistics
      */
     public function getAverage(): float
     {
-        $sum = array_sum($this->getMetricsOnly());
+        $sum = array_sum($this->getMetricsOnly($this->measurements));
         $count = count($this->measurements);
 
         return $sum / $count;
@@ -64,7 +69,7 @@ class PerformanceStatistics
      */
     public function getMinimum(): float
     {
-        return min($this->getMetricsOnly());
+        return min($this->getMetricsOnly($this->measurements));
     }
 
     /**
@@ -74,7 +79,7 @@ class PerformanceStatistics
      */
     public function getMaximum()
     {
-        return max($this->getMetricsOnly());
+        return max($this->getMetricsOnly($this->measurements));
     }
 
     /**
@@ -87,7 +92,7 @@ class PerformanceStatistics
         $count = count($this->measurements);
         $middleKey = (int)floor(($count - 1) / 2);
 
-        $set = array_values($this->getMetricsOnly());
+        $set = array_values($this->getMetricsOnly($this->measurements));
         // Sorting here might also get ugly for very large sets
         $sorted = sort($set);
         if (!$sorted) {
@@ -113,7 +118,7 @@ class PerformanceStatistics
         // Consider replacing with a statistics library
         $mean = $this->getAverage();
         $count = count($this->measurements);
-        $sumOfSquaredDifferences = array_reduce($this->getMetricsOnly(), function (float $memo, float $bytesPerSecond) use ($mean) {
+        $sumOfSquaredDifferences = array_reduce($this->getMetricsOnly($this->measurements), function (float $memo, float $bytesPerSecond) use ($mean) {
             return $memo + (($bytesPerSecond - $mean) ** 2);
         }, 0.0);
         $variance = $sumOfSquaredDifferences / $count;
@@ -192,5 +197,4 @@ class PerformanceStatistics
 
         return $outlierSets;
     }
-
 }
